@@ -34,21 +34,29 @@ function createTransporter() {
 
 async function sendNotification(newEmail, totalCount) {
   const transporter = createTransporter();
-  if (!transporter) return;
-  await transporter.sendMail({
-    from: `"VoiceCRM Waitlist" <${process.env.GMAIL_USER}>`,
-    to: 'ajain2303@gmail.com',
-    subject: `New waitlist signup #${totalCount} — ${newEmail}`,
-    text: `${newEmail} just joined the waitlist.\n\nTotal signups: ${totalCount}\n\nView all: ${BASE_URL}/api/emails`,
-    html: `
-      <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px">
-        <p style="font-size:13px;color:#888;margin-bottom:16px;text-transform:uppercase;letter-spacing:.08em">VoiceCRM Waitlist</p>
-        <h2 style="margin:0 0 8px;font-size:22px;color:#111">New signup #${totalCount}</h2>
-        <p style="font-size:18px;color:#7c3aed;font-weight:600;margin:0 0 24px">${newEmail}</p>
-        <p style="color:#555;font-size:14px;margin:0">Total people on the waitlist: <strong>${totalCount}</strong></p>
-      </div>
-    `,
-  });
+  if (!transporter) {
+    console.log('[email] Skipped — GMAIL_USER or GMAIL_APP_PASSWORD not set');
+    return;
+  }
+  try {
+    await transporter.sendMail({
+      from: `"VoiceCRM Waitlist" <${process.env.GMAIL_USER}>`,
+      to: 'ajain2303@gmail.com',
+      subject: `New waitlist signup #${totalCount} — ${newEmail}`,
+      text: `${newEmail} just joined the waitlist.\n\nTotal signups: ${totalCount}\n\nView all: ${BASE_URL}/api/emails`,
+      html: `
+        <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:24px">
+          <p style="font-size:13px;color:#888;margin-bottom:16px;text-transform:uppercase;letter-spacing:.08em">VoiceCRM Waitlist</p>
+          <h2 style="margin:0 0 8px;font-size:22px;color:#111">New signup #${totalCount}</h2>
+          <p style="font-size:18px;color:#7c3aed;font-weight:600;margin:0 0 24px">${newEmail}</p>
+          <p style="color:#555;font-size:14px;margin:0">Total people on the waitlist: <strong>${totalCount}</strong></p>
+        </div>
+      `,
+    });
+    console.log(`[email] Notification sent for ${newEmail}`);
+  } catch (err) {
+    console.error('[email] Failed to send notification:', err.message);
+  }
 }
 
 app.post('/api/waitlist', (req, res) => {
