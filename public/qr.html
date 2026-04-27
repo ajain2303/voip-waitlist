@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Code — Voice Call CRM + Summarizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: #1e1e2e;
+      --accent: #7c3aed;
+      --accent-bright: #9d5cf6;
+      --accent-glow: rgba(124, 58, 237, 0.35);
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Epilogue', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .back {
+      position: fixed;
+      top: 28px;
+      left: 28px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .back:hover { color: var(--text); }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 40px;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .logo-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #f0f0f8;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 300;
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    .qr-wrapper {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 28px;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .qr-wrapper img {
+      width: 100%;
+      max-width: 260px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 6px;
+    }
+
+    .qr-loading {
+      width: 260px;
+      height: 260px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      border: none;
+      border-radius: 10px;
+      padding: 13px 24px;
+      cursor: pointer;
+      text-decoration: none;
+      width: 100%;
+      justify-content: center;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
+    }
+
+    .btn-download:hover {
+      background: var(--accent-bright);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(124, 58, 237, 0.45);
+    }
+
+    .btn-download:active { transform: translateY(0); }
+
+    .url-hint {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #404055;
+      word-break: break-all;
+    }
+
+    .url-hint span {
+      color: var(--accent-bright);
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="back">← Back to waitlist</a>
+
+  <div class="card">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      VoiceCRM
+    </div>
+
+    <h1>Scan to Join</h1>
+    <p class="subtitle">Share this code to invite people<br />to the waitlist.</p>
+
+    <div class="qr-wrapper">
+      <div class="qr-loading" id="qr-loading">Generating QR code…</div>
+      <img id="qr-img" src="/api/qr" alt="QR Code" style="display:none"
+        onload="document.getElementById('qr-loading').style.display='none'; this.style.display='block';"
+        onerror="document.getElementById('qr-loading').textContent='Failed to load QR code.'" />
+    </div>
+
+    <a id="download-btn" href="/api/qr" download="voicecrm-waitlist-qr.png" class="btn-download">
+      ⬇ Download QR Code
+    </a>
+
+    <p class="url-hint">Points to: <span id="url-display"></span></p>
+  </div>
+
+  <script>
+    document.getElementById('url-display').textContent = window.location.origin;
+  </script>
+</body>
+</html>
