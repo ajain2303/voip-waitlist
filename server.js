@@ -56,6 +56,16 @@ app.get('/api/qr', async (req, res) => {
   }
 });
 
+app.get('/api/emails', (req, res) => {
+  const secret = process.env.ADMIN_SECRET;
+  if (secret && req.query.secret !== secret) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  ensureDataFile();
+  const emails = JSON.parse(fs.readFileSync(EMAILS_FILE, 'utf8'));
+  res.json({ count: emails.length, emails });
+});
+
 app.get('/qr', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'qr.html'));
 });
