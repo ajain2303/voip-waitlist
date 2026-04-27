@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QR Code — Voice Call CRM + Summarizer</title>
+  <title>QR Codes — Voice Call CRM + Summarizer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -17,6 +17,8 @@
       --accent: #7c3aed;
       --accent-bright: #9d5cf6;
       --accent-glow: rgba(124, 58, 237, 0.35);
+      --instagram: #e1306c;
+      --instagram-glow: rgba(225, 48, 108, 0.35);
       --text: #e8e8f0;
       --muted: #6b6b80;
     }
@@ -30,7 +32,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 24px;
+      padding: 60px 24px;
       overflow-x: hidden;
     }
 
@@ -40,9 +42,9 @@
       top: -30%;
       left: 50%;
       transform: translateX(-50%);
-      width: 700px;
+      width: 900px;
       height: 500px;
-      background: radial-gradient(ellipse, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+      background: radial-gradient(ellipse, rgba(124, 58, 237, 0.08) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -58,26 +60,17 @@
       align-items: center;
       gap: 6px;
       transition: color 0.2s;
+      z-index: 10;
     }
 
     .back:hover { color: var(--text); }
 
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 48px 40px;
+    .page-header {
       text-align: center;
-      max-width: 400px;
-      width: 100%;
+      margin-bottom: 48px;
+      animation: fadeUp 0.5s ease both;
       position: relative;
       z-index: 1;
-      animation: fadeUp 0.6s ease both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .logo {
@@ -86,7 +79,7 @@
       font-size: 14px;
       letter-spacing: 0.04em;
       color: var(--muted);
-      margin-bottom: 28px;
+      margin-bottom: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -101,45 +94,80 @@
       box-shadow: 0 0 8px var(--accent-glow);
     }
 
-    h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.01em;
-      color: #f0f0f8;
-      margin-bottom: 8px;
-    }
-
-    .subtitle {
+    .page-header p {
       font-size: 14px;
       color: var(--muted);
       font-weight: 300;
-      margin-bottom: 32px;
-      line-height: 1.5;
+    }
+
+    .cards {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      text-align: center;
+      width: 320px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .card:nth-child(2) { animation-delay: 0.1s; }
+
+    .card-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .card-label.waitlist { color: var(--accent-bright); }
+    .card-label.instagram { color: var(--instagram); }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #f0f0f8;
+      margin-bottom: 24px;
+      line-height: 1.3;
     }
 
     .qr-wrapper {
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 28px;
-      display: inline-block;
-      width: 100%;
+      padding: 16px;
+      margin-bottom: 20px;
     }
 
     .qr-wrapper img {
       width: 100%;
-      max-width: 260px;
+      max-width: 220px;
       height: auto;
-      display: block;
+      display: none;
       margin: 0 auto;
       border-radius: 6px;
     }
 
     .qr-loading {
-      width: 260px;
-      height: 260px;
+      width: 220px;
+      height: 220px;
       margin: 0 auto;
       display: flex;
       align-items: center;
@@ -152,72 +180,95 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--accent);
       color: #fff;
       font-family: 'Syne', sans-serif;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.03em;
       border: none;
       border-radius: 10px;
-      padding: 13px 24px;
+      padding: 12px 20px;
       cursor: pointer;
       text-decoration: none;
       width: 100%;
       justify-content: center;
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn-download:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-download:active { transform: translateY(0); }
+
+    .btn-download.waitlist {
+      background: var(--accent);
       box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
     }
 
-    .btn-download:hover {
-      background: var(--accent-bright);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 28px rgba(124, 58, 237, 0.45);
+    .btn-download.instagram {
+      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      box-shadow: 0 4px 20px rgba(225, 48, 108, 0.3);
     }
 
-    .btn-download:active { transform: translateY(0); }
-
     .url-hint {
-      margin-top: 20px;
-      font-size: 12px;
+      margin-top: 12px;
+      font-size: 11px;
       color: #404055;
       word-break: break-all;
     }
 
-    .url-hint span {
-      color: var(--accent-bright);
-    }
+    .url-hint span.waitlist { color: var(--accent-bright); }
+    .url-hint span.instagram { color: var(--instagram); }
   </style>
 </head>
 <body>
 
   <a href="/" class="back">← Back to waitlist</a>
 
-  <div class="card">
+  <div class="page-header">
     <div class="logo">
       <div class="logo-dot"></div>
       VoiceCRM
     </div>
+    <p>Scan a code below to join or follow along.</p>
+  </div>
 
-    <h1>Scan to Join</h1>
-    <p class="subtitle">Share this code to invite people<br />to the waitlist.</p>
+  <div class="cards">
 
-    <div class="qr-wrapper">
-      <div class="qr-loading" id="qr-loading">Generating QR code…</div>
-      <img id="qr-img" src="/api/qr" alt="QR Code" style="display:none"
-        onload="document.getElementById('qr-loading').style.display='none'; this.style.display='block';"
-        onerror="document.getElementById('qr-loading').textContent='Failed to load QR code.'" />
+    <!-- Waitlist QR -->
+    <div class="card">
+      <div class="card-label waitlist">Waitlist</div>
+      <h2>Sign up for early access</h2>
+      <div class="qr-wrapper">
+        <div class="qr-loading" id="waitlist-loading">Generating…</div>
+        <img src="/api/qr" alt="Waitlist QR Code"
+          onload="this.style.display='block'; document.getElementById('waitlist-loading').style.display='none';"
+          onerror="document.getElementById('waitlist-loading').textContent='Failed to load.'" />
+      </div>
+      <a href="/api/qr" download="voicecrm-waitlist-qr.png" class="btn-download waitlist">
+        ⬇ Download QR Code
+      </a>
+      <p class="url-hint">Points to: <span class="waitlist" id="waitlist-url"></span></p>
     </div>
 
-    <a id="download-btn" href="/api/qr" download="voicecrm-waitlist-qr.png" class="btn-download">
-      ⬇ Download QR Code
-    </a>
+    <!-- Instagram QR -->
+    <div class="card">
+      <div class="card-label instagram">Instagram</div>
+      <h2>Follow along on Instagram for the journey</h2>
+      <div class="qr-wrapper">
+        <div class="qr-loading" id="instagram-loading">Generating…</div>
+        <img src="/api/qr/instagram" alt="Instagram QR Code"
+          onload="this.style.display='block'; document.getElementById('instagram-loading').style.display='none';"
+          onerror="document.getElementById('instagram-loading').textContent='Failed to load.'" />
+      </div>
+      <a href="/api/qr/instagram" download="voicecrm-instagram-qr.png" class="btn-download instagram">
+        ⬇ Download QR Code
+      </a>
+      <p class="url-hint">Points to: <span class="instagram">instagram.com/anshaftercoffee</span></p>
+    </div>
 
-    <p class="url-hint">Points to: <span id="url-display"></span></p>
   </div>
 
   <script>
-    document.getElementById('url-display').textContent = window.location.origin;
+    document.getElementById('waitlist-url').textContent = window.location.origin;
   </script>
 </body>
 </html>

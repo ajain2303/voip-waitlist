@@ -56,6 +56,21 @@ app.get('/api/qr', async (req, res) => {
   }
 });
 
+app.get('/api/qr/instagram', async (req, res) => {
+  try {
+    const buffer = await qrcode.toBuffer('https://www.instagram.com/anshaftercoffee/', {
+      type: 'png',
+      width: 400,
+      margin: 2,
+      color: { dark: '#e1306c', light: '#0a0a0f' },
+    });
+    res.set('Content-Type', 'image/png');
+    res.send(buffer);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to generate QR code' });
+  }
+});
+
 app.get('/api/emails', (req, res) => {
   const secret = process.env.ADMIN_SECRET;
   if (secret && req.query.secret !== secret) {
