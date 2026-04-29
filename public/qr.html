@@ -19,6 +19,7 @@
       --accent-glow: rgba(124, 58, 237, 0.35);
       --instagram: #e1306c;
       --instagram-glow: rgba(225, 48, 108, 0.35);
+      --linkedin: #0077b5;
       --text: #e8e8f0;
       --muted: #6b6b80;
     }
@@ -137,6 +138,7 @@
 
     .card-label.waitlist { color: var(--accent-bright); }
     .card-label.instagram { color: var(--instagram); }
+    .card-label.linkedin { color: var(--linkedin); }
 
     h2 {
       font-family: 'Syne', sans-serif;
@@ -208,6 +210,11 @@
       box-shadow: 0 4px 20px rgba(225, 48, 108, 0.3);
     }
 
+    .btn-download.linkedin {
+      background: #0077b5;
+      box-shadow: 0 4px 20px rgba(0, 119, 181, 0.3);
+    }
+
     .url-hint {
       margin-top: 12px;
       font-size: 11px;
@@ -217,6 +224,7 @@
 
     .url-hint span.waitlist { color: var(--accent-bright); }
     .url-hint span.instagram { color: var(--instagram); }
+    .url-hint span.linkedin { color: var(--linkedin); }
   </style>
 </head>
 <body>
@@ -263,6 +271,22 @@
         ⬇ Download QR Code
       </a>
       <p class="url-hint">Points to: <span class="instagram">instagram.com/anshaftercoffee</span></p>
+    </div>
+
+    <!-- LinkedIn QR -->
+    <div class="card">
+      <div class="card-label linkedin">LinkedIn</div>
+      <h2>Connect with me on LinkedIn</h2>
+      <div class="qr-wrapper">
+        <div class="qr-loading" id="linkedin-loading">Generating…</div>
+        <img src="/api/qr/linkedin" alt="LinkedIn QR Code"
+          onload="this.style.display='block'; document.getElementById('linkedin-loading').style.display='none';"
+          onerror="document.getElementById('linkedin-loading').textContent='Failed to load.'" />
+      </div>
+      <a href="/api/qr/linkedin" download="voicecrm-linkedin-qr.png" class="btn-download linkedin">
+        ⬇ Download QR Code
+      </a>
+      <p class="url-hint">Points to: <span class="linkedin">linkedin.com/in/jain-anshita</span></p>
     </div>
 
   </div>

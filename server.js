@@ -57,6 +57,21 @@ app.get('/api/qr', async (req, res) => {
   }
 });
 
+app.get('/api/qr/linkedin', async (req, res) => {
+  try {
+    const buffer = await qrcode.toBuffer('https://www.linkedin.com/in/jain-anshita/', {
+      type: 'png',
+      width: 400,
+      margin: 2,
+      color: { dark: '#0077b5', light: '#0a0a0f' },
+    });
+    res.set('Content-Type', 'image/png');
+    res.send(buffer);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to generate QR code' });
+  }
+});
+
 app.get('/api/qr/instagram', async (req, res) => {
   try {
     const buffer = await qrcode.toBuffer('https://www.instagram.com/anshaftercoffee/', {
